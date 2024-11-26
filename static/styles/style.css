@@ -12,3 +12,8 @@ body {
 canvas{
   position: absolute;
 }
+
+video {
+  position: absolute;
+  transform: scaleX(-1); /* Mirror effect */
+}
