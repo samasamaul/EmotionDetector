@@ -52,7 +52,6 @@ video.addEventListener('play', () => {
 
       socket.emit('my event', { data: dominantExpression });
 
-      // Gambar hasil deteksi
       const resizedDetections = faceapi.resizeResults(detections, displaySize);
       canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
       faceapi.draw.drawDetections(canvas, resizedDetections);
@@ -60,8 +59,8 @@ video.addEventListener('play', () => {
       faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
 
       const ctx = canvas.getContext('2d');
-      ctx.font = '16px Arial';
-      ctx.fillStyle = 'red';
+      ctx.font = '20px Arial'; // Ubah ukuran font menjadi lebih besar
+      // ctx.fillStyle = 'red'; // Warna jika mau teks
       ctx.fillText(
         `${getEmojiForExpression(dominantExpression.name)}`,
         resizedDetections[0].detection.box.x + 30,
