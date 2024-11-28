@@ -1457,7 +1457,7 @@
             if (options === void 0) { options = {}; }
             var boxColor = options.boxColor, lineWidth = options.lineWidth, label = options.label, drawLabelOptions = options.drawLabelOptions;
             // WARNA BOX
-            this.boxColor = boxColor || 'rgba(0, 255, 0, 1)';
+            this.boxColor = boxColor || '#66c24a';
             this.lineWidth = lineWidth || 2;
             this.label = label;
             var defaultDrawLabelOptions = {

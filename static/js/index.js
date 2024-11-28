@@ -60,7 +60,7 @@ video.addEventListener('play', () => {
 
       const ctx = canvas.getContext('2d');
       ctx.font = '20px Arial'; // Ubah ukuran font menjadi lebih besar
-      // ctx.fillStyle = 'red'; // Warna jika mau teks
+      // ctx.fillStyle = 'red'; // Warna jika mau tekssssssssssssssss
       ctx.fillText(
         `${getEmojiForExpression(dominantExpression.name)}`,
         resizedDetections[0].detection.box.x + 30,
