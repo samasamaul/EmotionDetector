@@ -54,23 +54,17 @@ video.addEventListener('play', () => {
 
             faceapi.draw.drawDetections(canvas, resizedDetections);
             faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
-            // faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
+            faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
 
             resizedDetections.forEach(detection => {
-                const box = detection.detection.box;
                 const expressions = detection.expressions;
                 const dominantExpression = getDominantExpression(expressions);
-                const emoji = getEmojiForExpression(dominantExpression.name);
-
-                ctx.font = '20px Arial';
-                ctx.fillText(emoji, box.x + box.width / 2 - 10, box.y - 10);
 
                 socket.emit('my event', { data: dominantExpression });
             });
         }
     }, 500);
 });
-
 
 function getDominantExpression(expressions) {
   let maxExpression = { name: '', score: -Infinity };
@@ -82,18 +76,4 @@ function getDominantExpression(expressions) {
   }
 
   return maxExpression;
-}
-
-function getEmojiForExpression(expression) {
-  const emojiMap = {
-    'Datar': '😐',
-    'Senang': '😁',
-    'Sedih': '😢',
-    'Marah': '😡',
-    'Takut': '😨',
-    'Jijik': '🤢',
-    'Terkejut': '😲'
-  };
-
-  return emojiMap[expression] || '🤷‍♂️';
 }

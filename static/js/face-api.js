@@ -1498,7 +1498,8 @@
             var box = det instanceof FaceDetection
                 ? det.box
                 : (isWithFaceDetection(det) ? det.detection.box : new Box(det));
-            var label = score ? "" + round(score) : undefined;
+            // var label = score ? "" + round(score) : undefined;
+            var label = undefined;
             new DrawBox(box, { label: label }).draw(canvasArg);
         });
     }
@@ -2680,7 +2681,10 @@
             var anchor = isWithFaceDetection(e)
                 ? e.detection.box.bottomLeft
                 : (textFieldAnchor || new Point(0, 0));
-            var drawTextField = new DrawTextField(resultsToDisplay.map(function (expr) { return expr.expression + " (" + round(expr.probability) + ")"; }), anchor);
+                var drawTextField = new DrawTextField(
+                    resultsToDisplay.map(function (expr) { return expr.expression; }),
+                    anchor
+                );
             drawTextField.draw(canvasArg);
         });
     }
