@@ -35,42 +35,42 @@ function startVideo() {
 }
 
 video.addEventListener('play', () => {
-  const canvas = faceapi.createCanvasFromMedia(video);
-  document.body.append(canvas);
-  const displaySize = { width: video.width, height: video.height };
-  faceapi.matchDimensions(canvas, displaySize);
+    const canvas = faceapi.createCanvasFromMedia(video);
+    document.body.append(canvas);
+    const displaySize = { width: video.width, height: video.height };
+    faceapi.matchDimensions(canvas, displaySize);
 
-  setInterval(async () => {
-    const detections = await faceapi
-      .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
-      .withFaceLandmarks()
-      .withFaceExpressions();
+    setInterval(async () => {
+        const detections = await faceapi
+            .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
+            .withFaceLandmarks()
+            .withFaceExpressions();
 
-    if (detections.length > 0) {
-      const expressions = detections[0].expressions;
-      const dominantExpression = getDominantExpression(expressions);
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      socket.emit('my event', { data: dominantExpression });
+        if (detections.length > 0) {
+            const resizedDetections = faceapi.resizeResults(detections, displaySize);
 
-      const resizedDetections = faceapi.resizeResults(detections, displaySize);
-      canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
-      faceapi.draw.drawDetections(canvas, resizedDetections);
-      faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
-      // faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
+            faceapi.draw.drawDetections(canvas, resizedDetections);
+            faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
+            // faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
 
-      const ctx = canvas.getContext('2d');
-      ctx.font = '20px Arial'; // Ubah ukuran font menjadi lebih besar
-      // ctx.fillStyle = 'red'; // Warna jika mau tekssssssssssssssss
-      ctx.fillText(
-        `${getEmojiForExpression(dominantExpression.name)}`,
-        resizedDetections[0].detection.box.x + 30,
-        resizedDetections[0].detection.box.y - 5
-      );
-    } else {
-      canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
-    }
-  }, 500);
+            resizedDetections.forEach(detection => {
+                const box = detection.detection.box;
+                const expressions = detection.expressions;
+                const dominantExpression = getDominantExpression(expressions);
+                const emoji = getEmojiForExpression(dominantExpression.name);
+
+                ctx.font = '20px Arial';
+                ctx.fillText(emoji, box.x + box.width / 2 - 10, box.y - 10);
+
+                socket.emit('my event', { data: dominantExpression });
+            });
+        }
+    }, 500);
 });
+
 
 function getDominantExpression(expressions) {
   let maxExpression = { name: '', score: -Infinity };
