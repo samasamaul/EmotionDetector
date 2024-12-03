@@ -2667,7 +2667,7 @@
     }
   
     function drawFaceExpressions(canvasArg, faceExpressions, minConfidence, textFieldAnchor) {
-        if (minConfidence === void 0) { minConfidence = 0.1; }
+        if (minConfidence === void 0) { minConfidence = 0.6; }
         var faceExpressionsArray = Array.isArray(faceExpressions) ? faceExpressions : [faceExpressions];
         faceExpressionsArray.forEach(function (e) {
             var expr = e instanceof FaceExpressions
